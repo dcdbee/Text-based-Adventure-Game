@@ -28,7 +28,7 @@ namespace Text_based_Adventure_Game
                                                               ░   ▒    ░ ░  ░      ░░     ░      ░   ░ ░   ░       ░░░ ░ ░   ░░   ░    ░      ░ ░   ░   ░   ▒   ░      ░      ░   
                                                                   ░  ░   ░          ░     ░  ░         ░             ░        ░        ░  ░         ░       ░  ░       ░      ░  ░
                                                                        ░           ░                                                                                              ";
-        static string Play = @"
+        static string PlayText = @"
 
 
 
@@ -42,7 +42,7 @@ namespace Text_based_Adventure_Game
 
 ";
 
-        static string Quit = @"                    
+        static string QuitText = @"                    
                                                                                                        ___         _____ _____ _____ _____ 
                                                                                                       |_  |       |     |  |  |     |_   _|
                                                                                                       |  _|   _   |  |  |  |  |-   -| | |  
@@ -68,8 +68,8 @@ namespace Text_based_Adventure_Game
             Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.WriteLine(Title);
             Console.ForegroundColor = ConsoleColor.Gray;
-            Console.WriteLine(Play);
-            Console.WriteLine(Quit);
+            Console.WriteLine(PlayText);
+            Console.WriteLine(QuitText);
             Console.ReadKey();
             string UserInput = Console.ReadLine();
             Console.Write("Input: ");
@@ -81,7 +81,25 @@ namespace Text_based_Adventure_Game
                 UserInput = Console.ReadLine();
             }
             Cosmetic("text", "INPUT ACCEPTED", 25, true, true, ConsoleColor.Green);
+            if(UserInput == "2") 
+            {
+                QuitGame();
+            }
             Console.ReadKey();
+        }
+
+        static void QuitGame()
+        {
+            Cosmetic("text", "INITIATING SHUTDOWN", 25, false, true, ConsoleColor.DarkRed);
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.Write(" .");
+            Thread.Sleep(100);
+            Console.Write(" .");
+            Thread.Sleep(100);
+            Console.Write(" .");
+            Thread.Sleep(100);
+            Thread.Sleep(2500);
+            Environment.Exit(0);
         }
 
         static void Cosmetic(string type, string text, int time, bool NextLine, bool centered, ConsoleColor colour)
