@@ -10,7 +10,7 @@ namespace Text_based_Adventure_Game
     class Program
     {
         #region Global Variables
-
+        static int Coins;  
         #endregion
         //regions
         #region Ascii
@@ -123,6 +123,5 @@ namespace Text_based_Adventure_Game
             }
             Console.ForegroundColor = ConsoleColor.White;
         }
-
     }
 }
