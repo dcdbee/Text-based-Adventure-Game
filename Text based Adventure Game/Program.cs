@@ -10,7 +10,9 @@ namespace Text_based_Adventure_Game
     class Program
     {
         #region Global Variables
-        static int Coins;  
+        static int Coins;
+        static int Health;
+        static int MaxHealth = 20;
         #endregion
         //regions
         #region Ascii
@@ -56,15 +58,51 @@ namespace Text_based_Adventure_Game
         #endregion        
         static void Main()
         {
+            Battle();
             Console.WriteLine(Console.WindowWidth);
             Cosmetic("text", "Please full screen the window then press any key to boot", 25, false, false, ConsoleColor.Gray);
             Console.ReadKey();
-            Console.Clear(); 
+            Console.Clear();
             Menu();
         }
 
-        static void Menu()
+        static void Battle()
         {
+            Health = 10;
+            while(true){
+                Console.WriteLine("");
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.WriteLine("Please enter new health");
+                Health = int.Parse(Console.ReadLine());
+                UpdateScreen();
+            }
+
+        }
+
+        static void UpdateScreen()
+        {
+            Console.Clear();
+            Console.WriteLine(@"
+
+                 
+
+
+                                                                ");
+            Console.Write("                  ");
+            for(int i = 0; i < Health; i++)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.Write("█");
+            }
+            for(int j = 0; j < MaxHealth - Health; j++)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.Write("█");
+            }
+        }
+
+        static void Menu()
+        { 
             Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.WriteLine(Title);
             Console.ForegroundColor = ConsoleColor.Gray;
