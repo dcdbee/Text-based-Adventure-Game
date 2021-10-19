@@ -13,7 +13,7 @@ namespace Text_based_Adventure_Game
 
         #region Global Variables
         static string PlayerName = "Null";
-        static int Coins;
+        static int Coins = 100;
         static int Health;
         static int MaxHealth = 20;
         static int EnemyHealth;
@@ -63,12 +63,11 @@ namespace Text_based_Adventure_Game
 
         static string Stickman = @"
                                                                                                                         
-                                                                                                          .    *    _@   .    .
-                                                                                                         .  o   .  </\_   o  *
-                                                                                                           .     ~\/\  '      o
-                                                                                                         o     .    /   .  *
-                                                                                                                    ~
-                                                                                                                
+                                                                                                           .    *    _@   .    .
+                                                                                                          .  o   .  </\_   o  *
+                                                                                                            .     ~\/\  '      o
+                                                                                                          o     .    /   .  *
+                                                                                                                     ~        
 ";
 
         #endregion        
@@ -80,7 +79,6 @@ namespace Text_based_Adventure_Game
             Console.Clear();
             Menu();
         }
-
 
         static void Battle()
         {
@@ -125,7 +123,6 @@ namespace Text_based_Adventure_Game
                 Console.WriteLine("You died");
                 BattleEnd = true;
             }
-
         }
 
         static void UpdateScreen()
@@ -153,9 +150,6 @@ namespace Text_based_Adventure_Game
                 Console.Write("█");
             }
             Console.WriteLine(Health);
-
-
-
             Console.WriteLine(@"
 
                  
@@ -174,7 +168,6 @@ namespace Text_based_Adventure_Game
                 Console.Write("█");
             }
             Console.WriteLine(EnemyHealth);
-
         }
 
         static void Menu()
@@ -251,12 +244,17 @@ namespace Text_based_Adventure_Game
             Console.Clear();
             Console.ReadKey();
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.Write(@"
+            Cosmetic("text", PlayerName, 0, true, true, ConsoleColor.Magenta);
 
-
-                                                                                                            " + PlayerName);
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine(Stickman);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Cosmetic("text", "Coins: " + Coins , 0, true, true, ConsoleColor.Red);
+            Cosmetic("text", "[!] PRESS ANY KEY TO START", 25, true, true, ConsoleColor.Green);
+
+            Console.ReadKey();
+
+            Battle();
         }
 
         static void QuitGame()
