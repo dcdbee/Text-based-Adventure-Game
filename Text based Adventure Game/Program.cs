@@ -9,7 +9,7 @@ namespace Text_based_Adventure_Game
 {
     class Program
     {
-        //regions
+        //regions//loltest
 
         #region Global Variables
         static string PlayerName = "Null";
