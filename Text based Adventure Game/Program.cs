@@ -19,6 +19,7 @@ namespace Text_based_Adventure_Game
         static int EnemyHealth;
         static int EnemyMaxHealth;
         static bool BattleEnd = false;
+        static int pDeaths;
         static string PlayerWeapon = "Fists";
         #endregion
 
@@ -72,7 +73,6 @@ namespace Text_based_Adventure_Game
 ";
 
         #endregion
-
         static void Main()
         {
             Console.Title = "Adventure Game";
@@ -82,22 +82,23 @@ namespace Text_based_Adventure_Game
             Background();
             Menu();
         }
+        
 
         #region Battle
-
+        
         static void Battle(int EnemyHealthInput, string EnemyName)
         {
             //variables
             string[] Messages = { };
             BattleEnd = false;
-            Health = 20;
-            EnemyHealth = EnemyHealthInput;
-            EnemyMaxHealth = 20;
+            Health = MaxHealth;
+            EnemyMaxHealth = EnemyHealthInput;
+            EnemyHealth = EnemyMaxHealth;
             int EnemyDamage;
             Random RND = new Random();
             //logic
             Cosmetic("text", "You engage in battle with a " + EnemyName, 25, true, true, ConsoleColor.Gray);
-            Thread.Sleep(500);
+            Thread.Sleep(2000);
             while (BattleEnd == false)
             {
                 UpdateScreen(EnemyName, Messages);
@@ -107,31 +108,24 @@ namespace Text_based_Adventure_Game
                 Console.ReadKey();
                 int PlayerDamage = RND.Next(1, 5);
                 EnemyHealth = EnemyHealth - PlayerDamage;
-                AppendMsg("You dealt " + PlayerDamage + " damage!", Messages);
                 UpdateScreen(EnemyName, Messages);
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("You dealt " + PlayerDamage + " damage");
+                Console.ReadKey();
                 CheckDeath(EnemyName);
                 if (BattleEnd) { break; }
                 Console.ReadKey();
                 EnemyDamage = RND.Next(1, 5);
                 Health = Health - EnemyDamage;
-                AppendMsg("The enemy dealt " + EnemyDamage + " damage!", Messages);
                 UpdateScreen(EnemyName, Messages);
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("The enemy dealt " + EnemyDamage + " damage!");
+                Console.ReadKey();
                 CheckDeath(EnemyName);
             }
             Console.ReadKey();
             Console.Clear();
             return;
-        }
-
-        static void AppendMsg(string msg, string[] Messages)
-        {
-            for (int i = 0; i < Messages.Length; i++)
-            {
-                if (Messages[i] == null)
-                {
-                    Messages[i] = msg;
-                }
-            }
         }
 
         static void CheckDeath(string enemyName = "null")
@@ -205,7 +199,7 @@ namespace Text_based_Adventure_Game
             Console.WriteLine(EnemyHealth);
             Console.WriteLine("");
             Console.WriteLine(Messages.Length);
-            for (int i = 0; i < Messages.Length; i++)
+            for(int i = 0; i < Messages.Length; i++)
             {
                 Console.WriteLine(Messages[i]);
                 Console.WriteLine("hello");
@@ -306,8 +300,8 @@ namespace Text_based_Adventure_Game
             Cosmetic("text", "[C] Dagger", 50, true, true, ConsoleColor.White);
             Console.WriteLine("Input: ");
 
-            string userInput = Console.ReadLine().ToLower();
-            while (userInput != "a" && userInput != "b" && userInput != "c")
+            string userInput = Console.ReadLine().ToLower() ;
+            while(userInput != "a" && userInput != "b" && userInput != "c")
             {
                 Cosmetic("text", "INVALID INPUT", 25, true, true, ConsoleColor.DarkRed);
                 Cosmetic("text", "Please enter one of the options above", 50, true, true, ConsoleColor.White);
@@ -355,20 +349,126 @@ namespace Text_based_Adventure_Game
                 case "a":
                     Cosmetic("text", "INPUT ACCEPTED", 25, true, true, ConsoleColor.Green);
                     Cosmetic("text", "You continue onwards into the dark Forest", 25, true, true, ConsoleColor.Magenta);
-                    Battle(10, "Werewolf");
+                    Battle(20, "Werewolf");
+                    Game_Forest();
                     break;
                 case "b":
                     Cosmetic("text", "INPUT ACCEPTED", 25, true, true, ConsoleColor.Green);
                     Cosmetic("text", "You enter the abandoned Hut", 25, true, true, ConsoleColor.Magenta);
+                    Battle(20, "Spider");
+                    Cosmetic("text", "You enter the hut through the back exit and find yourself by a river.", 25, true, true, ConsoleColor.Magenta);
+                    River();
                     break;
             }
             Console.WriteLine("");
             Thread.Sleep(500);
-
-
         }
+
+        static void Game_Forest()
+        {
+            Cosmetic("text", "You see something bright and orange!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", 25, true, true, ConsoleColor.Green);
+            Cosmetic("text", "[!] There's a forest fire, do you run to the left towards the river or continue through the woods", 25, true, true, ConsoleColor.Yellow);
+            Cosmetic("text", "[A] Call Fireman Sam", 15, true, true, ConsoleColor.White);
+            Cosmetic("text", "[B] Run towards the River", 15, true, true, ConsoleColor.White);
+            Cosmetic("text", "[C] Continue through the woods which is now on fire", 15, true, true, ConsoleColor.White);
+            string userInput = Console.ReadLine().ToLower();
+            while (userInput != "a" && userInput != "b")
+            {
+                Cosmetic("text", "INVALID INPUT", 25, true, true, ConsoleColor.DarkRed);
+                Cosmetic("text", "Please enter one of the options above", 50, true, true, ConsoleColor.White);
+                Console.WriteLine("Input: ");
+                userInput = Console.ReadLine();
+            }
+            userInput = userInput.ToLower();
+            switch (userInput)
+            {
+                case "a":
+                    Cosmetic("text", "INPUT ACCEPTED", 25, true, true, ConsoleColor.Green);
+                    Cosmetic("text", "You continue onwards into the dark Forest", 25, true, true, ConsoleColor.Magenta);
+                    Death("Fireman sam tells you to burn");
+                    break;
+                case "b":
+                    Cosmetic("text", "INPUT ACCEPTED", 25, true, true, ConsoleColor.Green);
+                    Cosmetic("text", "You run and escape the fire, coming out by the river", 25, true, true, ConsoleColor.Magenta);
+                    Cosmetic("text", "You pick a fight with a Salmon", 25, true, true, ConsoleColor.Red);
+                    Battle(15, "Salmon");
+                    River();
+                    break;
+                case "c":
+                    Cosmetic("text", "INPUT ACCEPTED", 25, true, true, ConsoleColor.Green);
+                    Cosmetic("text", "You continue run but the fire catches up", 25, true, true, ConsoleColor.Magenta);
+                    Death("You perish in a forest fire");
+                    break;
+            }
+        }
+
+        static void River()
+        {
+            Cosmetic("text", "[!] The river has two bridges which one do you cross. ", 25, true, true, ConsoleColor.Yellow);
+            Cosmetic("text", "[A] Bridge no.1", 15, true, true, ConsoleColor.White);
+            Cosmetic("text", "[B] Bridge no.2", 15, true, true, ConsoleColor.White);
+            string userInput = Console.ReadLine().ToLower();
+            while (userInput != "a" && userInput != "b")
+            {
+                Cosmetic("text", "INVALID INPUT", 25, true, true, ConsoleColor.DarkRed);
+                Cosmetic("text", "Please enter one of the options above", 50, true, true, ConsoleColor.White);
+                Console.WriteLine("Input: ");
+                userInput = Console.ReadLine();
+            }
+            userInput = userInput.ToLower();
+            switch (userInput)
+            {
+                case "a":
+                    Cosmetic("text", "INPUT ACCEPTED", 25, true, true, ConsoleColor.Green);
+                    Cosmetic("text", "You begin to cross the bridge before an angry troll lad comes after ye", 25, true, true, ConsoleColor.Magenta);
+                    Battle(20, "Angry Troll Lad");
+                    Field();
+                    break;
+                case "b":
+                    Cosmetic("text", "INPUT ACCEPTED", 25, true, true, ConsoleColor.Green);
+                    Cosmetic("text", "You were stupid and picked the wrong bridge.", 75, true, true, ConsoleColor.Magenta);
+                    Cosmetic("text", "An angry dragon comes up from under the bridge.", 25, true, true, ConsoleColor.Red);
+                    Battle(35, "Dragon");
+                    Field();
+                    break;
+
+            }
+        }
+
+        static void Field()
+        {
+            Cosmetic("text", "You somehow survived and crossed the bridge into an open field.", 35, true, true, ConsoleColor.Magenta);
+            Cosmetic("text", "There's an AI in the field!", 25, true, true, ConsoleColor.Magenta);
+            Cosmetic("text", "You must roll a 6 in order to pass! If I roll a 6 first you will die!", 25, true, true, ConsoleColor.Yellow);
+            Random rnd = new Random();
+            int aiRoll = 0;
+            int pRoll = 0;
+            while(aiRoll != 6 && pRoll != 6)
+            {
+                Cosmetic("text", "[!] Press any key to roll a dice", 25, true, true, ConsoleColor.Blue);
+                Console.ReadKey();
+                pRoll = rnd.Next(1, 7);
+                Cosmetic("text", "[!] You rolled a " + pRoll , 25, true, true, ConsoleColor.Cyan);
+                aiRoll = rnd.Next(1, 7);
+                Cosmetic("text", "[!] AI rolled a " + aiRoll, 25, true, true, ConsoleColor.Cyan);
+            }
+            if(aiRoll == 6)
+            {
+                Death("AI Rolled a 6, the die exploded taking you out with them.");
+            }
+            else
+            {
+                Cosmetic("text", "AI pulls out a knife", 25, true, true, ConsoleColor.Blue);
+                Battle(20, "AI the bad loser");
+                Cosmetic("text", "You completed the game and only died " + pDeaths + " times", 25, true, true, ConsoleColor.Blue);
+                Thread.Sleep(2000);
+                Menu();
+            }
+        }
+
         static void Death(string deathReason)
         {
+            pDeaths++;
             Coins = 100;
             Health = MaxHealth;
             Cosmetic("text", deathReason, 50, true, true, ConsoleColor.White);
