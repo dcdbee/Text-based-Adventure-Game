@@ -1,0 +1,64 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Movement : MonoBehaviour
+{
+    private Rigidbody rb;
+    [SerializeField] private float WalkSpeed;
+    [SerializeField] private float JumpHeight;
+    [SerializeField] private float SprintModifier;
+    public GameObject Platform;
+    private float CurrentSprint;
+    bool sprinting = false;
+    private Vector3 Spawn;
+    private bool onGround = true;
+
+    private void Start()
+    {
+        onGround = true;
+        rb = GetComponent<Rigidbody>();
+        Spawn = transform.position;
+        int test = 5;
+        for(int i = 0; i < 65; i++)
+        {
+            Instantiate(Platform, new Vector3(Random.Range(1, 4), Random.Range(-4,0), test), Quaternion.identity);
+            test += 5;
+        }
+    }
+
+    public void Jump()
+    {
+        if (!onGround) { return; }
+        Debug.Log("a");
+        rb.AddForce(0, JumpHeight, 0);
+        onGround = false;
+    }
+
+    private void FixedUpdate()
+    {
+        float t_forward = WalkSpeed * Input.GetAxis("Horizontal");
+        float t_sideways = WalkSpeed * Input.GetAxis("Vertical");
+        rb.velocity = new Vector3(t_forward * CurrentSprint, rb.velocity.y, t_sideways * CurrentSprint);
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Jump();
+        }
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            sprinting = true;
+            CurrentSprint = SprintModifier;
+        }
+        else { CurrentSprint = 1; }
+        if (transform.position.y < -2) { transform.position = Spawn; }
+    }
+
+    public void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.tag == "Ground")
+        {
+            onGround = true;
+        }
+    }
+}
